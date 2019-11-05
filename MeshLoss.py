@@ -1,6 +1,8 @@
 import torch
 from sample_points.sample_points_python import PointSampler
 from chamfer_distance.chamfer_distance import ChamferDistance
+from normal_loss.normal_loss_python import NormalLoss
+from edge_loss.edge_loss_python import EdgeLoss
 
 class MeshLoss(torch.nn.Module):
     def __init__(self, point_sample_num, chamfer_weight=1.0, norm_weight=0.1, edge_weight=0.5, laplacian_weight=0.0):
@@ -13,6 +15,9 @@ class MeshLoss(torch.nn.Module):
 
         self.points_sampler = PointSampler(self.point_sample_num)
         self.chamfer_distance = ChamferDistance()
+        self.normal_loss = NormalLoss()
+        self.edge_loss = EdgeLoss()
+
 
     def forward(self, predicted_vertices, predicted_faces, gt_vertices, gt_faces):
         # chamfer loss
@@ -21,8 +26,8 @@ class MeshLoss(torch.nn.Module):
         dist1, dist2 = self.chamfer_distance(predicted_point_cloud, gt_point_cloud)
         chamfer_loss = torch.mean(dist1) + torch.mean(dist2)
 
-        norm_loss = 0
-        edge_loss = 0
+        norm_loss = self.normal_loss(predicted_point_cloud, predicted_normals, gt_point_cloud, gt_normals)
+        edge_loss = self.edge_loss(predicted_vertices, predicted_faces)
 
         loss = self.chamfer_weight * chamfer_loss + self.norm_weight * norm_loss + self.edge_weight * edge_loss
 
