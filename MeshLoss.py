@@ -40,5 +40,5 @@ class MeshLoss(torch.nn.Module):
 
 
 if __name__ == '__main__':
-    meshLoss = MeshLoss(1000)
+    meshLoss = MeshLoss(point_sample_num=1000)
     meshLoss.test()
