@@ -4,14 +4,16 @@ import torch
 class NormalLoss(torch.nn.Module):
     def __init__(self):
         super(NormalLoss, self).__init__()
+        self.cosine_distance = torch.nn.CosineSimilarity()
 
     def distance_matrix(self, points1, points2):
         return torch.cdist(points1, points2)
 
     def normal_distance(self, normal1, normal2):
-        return 0
+        return self.cosine_distance(normal1, normal2)
 
     def forward(self, predicted_points_batch, predicted_normals_batch, gt_points_batch, gt_normals_batch):
+        result_batch = []
         for predicted_points, predicted_normals, gt_points, gt_normals in zip(predicted_points_batch, predicted_normals_batch,
                                                                               gt_points_batch, gt_normals_batch):
             distance_matrix = self.distance_matrix(predicted_points, gt_points)
@@ -24,8 +26,8 @@ class NormalLoss(torch.nn.Module):
             dist1 = self.normal_distance(predicted_normals, nearest_gt_normals)
             dist2 = self.normal_distance(gt_normals, nearest_predicted_normals)
 
-            return torch.mean(dist1) + torch.mean(dist2)
-
+            result_batch.append(-(torch.mean(dist1) + torch.mean(dist2)))
+        return torch.stack(result_batch)
 
 
 if __name__ == '__main__':
@@ -38,3 +40,6 @@ if __name__ == '__main__':
 
     print(torch.min(distance_matrix, dim=0))
     print(torch.min(distance_matrix, dim=1))
+
+    cosine = torch.nn.CosineSimilarity()
+    print(cosine(a, b))
