@@ -4,20 +4,20 @@ from chamfer_distance.chamfer_distance import ChamferDistance
 from normal_loss.normal_loss_python import NormalLoss
 from edge_loss.edge_loss_python import EdgeLoss
 
+
+
 class MeshLoss(torch.nn.Module):
-    def __init__(self, point_sample_num, chamfer_weight=1.0, norm_weight=0.1, edge_weight=0.5, laplacian_weight=0.0):
+    def __init__(self, point_sample_num, chamfer_weight=1.0, norm_weight=0.1, edge_weight=0.5):
         super(MeshLoss, self).__init__()
         self.point_sample_num = point_sample_num
         self.chamfer_weight = chamfer_weight
         self.norm_weight = norm_weight
         self.edge_weight = edge_weight
-        self.laplacian_weight = laplacian_weight
 
         self.points_sampler = PointSampler(self.point_sample_num)
         self.chamfer_distance = ChamferDistance()
         self.normal_loss = NormalLoss()
         self.edge_loss = EdgeLoss()
-
 
     def forward(self, predicted_vertices, predicted_faces, gt_vertices, gt_faces):
         # chamfer loss
