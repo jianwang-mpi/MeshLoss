@@ -1,8 +1,8 @@
-from sample_points.sample_points_python import PointSampler
+from meshloss.sample_points.sample_points_python import PointSampler
 # from chamfer_distance import ChamferDistance
-from .ChamferDistancePytorch.dist_chamfer import chamferDist
-from normal_loss.normal_loss_python import NormalLoss
-from edge_loss.edge_loss_python import EdgeLoss
+from meshloss.ChamferDistancePytorch.dist_chamfer import chamferDist
+from meshloss.normal_loss.normal_loss_python import NormalLoss
+from meshloss.edge_loss.edge_loss_python import EdgeLoss
 import torch
 
 

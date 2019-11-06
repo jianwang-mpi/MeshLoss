@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="mesh_loss",
+    name="meshloss",
     version="0.01",
     description="Mesh Loss",
     author="Jian Wang",

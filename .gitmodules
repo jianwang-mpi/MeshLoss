@@ -1,3 +1,6 @@
 [submodule "ChamferDistancePytorch"]
 	path = meshloss/ChamferDistancePytorch
 	url = https://github.com/ThibaultGROUEIX/ChamferDistancePytorch
+[submodule "meshloss/ChamferDistancePytorch"]
+	path = meshloss/ChamferDistancePytorch
+	url = https://github.com/ThibaultGROUEIX/ChamferDistancePytorch
